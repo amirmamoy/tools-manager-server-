@@ -168,5 +168,30 @@ show_reboot_menu() {
             2)
                 reboot_selected_server
                 break
+            3    ;;
+            3) reboot_multiple_servers break
                 ;;
-            3)
+            0) break
+                ;;
+            *) echo "❌ Pilihan tidak valid!"
+                ;;
+        esac done
+}
+# MENU UTAMA
+while true; do show_header echo "" echo "🔧 MENU UTAMA" echo "1. Cek Status Server" echo "2. 
+    Reboot Server" echo "3. Shutdown Semua Server" echo "0. Keluar" echo 
+    "-------------------------------------------" read -p "Masukkan pilihan [0-3]: " main_choice 
+    case $main_choice in
+        1) check_status
+            ;;
+        2) show_reboot_menu
+            ;;
+        3) read -p "Yakin ingin matikan semua server? (y/n): " confirm if [[ $confirm == "y" || 
+            $confirm == "Y" ]]; then
+                shutdown_servers else echo "❌ Dibatalkan oleh user" fi
+            ;;
+        0) echo "👋 Keluar dari Server Management Tools..." exit 0
+            ;;
+        *) echo "❌ Pilihan tidak valid!"
+            ;;
+    esac echo "" read -p "Tekan [Enter] untuk kembali ke menu..." done
