@@ -1,0 +1,47 @@
+name: Validate Script
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Check files exist
+        run: |
+          echo "📁 Checking repository files..."
+          ls -la
+          echo "---"
+          if [ -f "server-manager.sh" ]; then
+            echo "✅ server-manager.sh found"
+          else
+            echo "❌ server-manager.sh not found"
+            exit 1
+          fi
+          
+      - name: Basic script check
+        run: |
+          echo "🔍 Checking script basics..."
+          # Check shebang line
+          if head -n1 server-manager.sh | grep -q "#!/bin/bash"; then
+            echo "✅ Shebang is correct"
+          else
+            echo "❌ Shebang is missing or incorrect"
+            exit 1
+          fi
+          
+          # Check if file has content
+          if [ -s "server-manager.sh" ]; then
+            echo "✅ Script has content"
+          else
+            echo "❌ Script is empty"
+            exit 1
+          fi
+          
+          echo "🎉 Basic validation passed!"

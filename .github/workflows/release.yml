@@ -8,35 +8,19 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    permissions:
+      contents: write
       
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      with:
-        name: Release ${{ github.ref_name }}
-        body: |
-          # 🚀 Server Management Tools ${{ github.ref_name }}
-          
-          ## What's New
-          - Multi-server management via SSH
-          - Shutdown and reboot capabilities
-          - Selective server operations
-          - Status monitoring
-          
-          ## Quick Start
-          ```bash
-          wget https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/server-manager.sh
-          chmod +x server-manager.sh
-          ./server-manager.sh
-          ```
-        draft: false
-        prerelease: false
-        files: |
-          server-manager.sh
-          README.md
-          LICENSE
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            Automated release for Server Management Tools
+          files: |
+            server-manager.sh
+            README.md
