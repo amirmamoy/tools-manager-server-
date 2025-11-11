@@ -6,9 +6,9 @@
 
 # Konfigurasi untuk 3 server
 SERVERS=(
-    "mamoy@192.168.0.101"
-    "ituk@192.168.0.102"
-    "ituk@192.168.0.103"
+    "user@your ip"
+    "user@your ip"
+    "user@your ip"
 )
 
 show_header() {
