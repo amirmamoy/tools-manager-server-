@@ -1,0 +1,19 @@
+# Temporary files
+*.tmp
+*.log
+*.swp
+
+# Backup files
+*.bak
+*.backup
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local config
+config.local.sh
