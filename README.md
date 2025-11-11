@@ -82,3 +82,34 @@ PILIH AKSI:
 + Reboot all - Restart semua server
 + Reboot selected - Pilih 1 server tertentu
 + Reboot multiple - pilih beberapa server contoh (1 3)
+📡 Status check
+menampilkan status ONLINE/OFFLINE server
+🛠️ Requirement
++ Bash 4.0+
++ SSH client
++ Sudo access di server target
++ SSH key authentication
+🔧 Troubleshooting
+Connection issues:
+```bash
+# Test koneksi manual
+ssh username@server-ip "echo test"
+
+# Cek SSH key
+ssh-copy-id username@server-ip
+```
+permission issues:
+```bash
+# Konfigurasi sudoers di server target
+sudo visudo
+# Tambahkan: username ALL=(ALL) NOPASSWD: /sbin/shutdown, /sbin/reboot
+```
+📄License
+MIT License - lihat LICENSE untuk detail.
+Contributing
+1. Fork repository
+2. Buat feature branch
+3. Commit changes
+4. Push ke branch
+5. Buat Pull Request
+Beri bintang jika project ini membantu!
