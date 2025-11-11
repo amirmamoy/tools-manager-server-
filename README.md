@@ -30,3 +30,55 @@ cd server-management-tools
 
 # Beri permission executable
 chmod +x server-manager.sh
+```
+### 2. Konfigurasi Server
+Edit script dan sesuaikan dengan servermu
+```bash
+nano server-manager.sh
+```
+Ubah konfigurasi pada bagian:
+```bash
+SERVERS=(
+    "username@server1-ip"
+    "username@server2-ip" 
+    "username@server3-ip"
+)
+```
+### 3. Setup SSH & Sudoers
+```bash
+# Generate SSH key
+ssh-keygen -t rsa
+
+# Copy key ke server
+ssh-copy-id username@server1-ip
+
+# Konfigurasi sudoers di server target
+ssh username@server1-ip "echo 'username ALL=(ALL) NOPASSWD: /sbin/shutdown, /sbin/reboot' | sudo tee -a /etc/sudoers"
+```
+### 4. Jalankan
+```bash
+./server-manager.sh
+```
+### 📋 MENU UTAMA
+```text
+===========================================
+     SERVER MANAGEMENT TOOLS v1.1.0
+===========================================
+Server Target:
+1. mamoy@192.168.0.101
+2. ituk@192.168.0.102
+3. ituk@192.168.0.103
+===========================================
+
+PILIH AKSI:
+1. Shutdown Semua Server
+2. Reboot - Pilih Mode
+3. Cek Status Server
+4. Keluar
+-------------------------------------------
+```
+### Cara penggunaan
+🔁 Reboot options
++ Reboot all - Restart semua server
++ Reboot selected - Pilih 1 server tertentu
++ Reboot multiple - pilih beberapa server contoh (1 3)
