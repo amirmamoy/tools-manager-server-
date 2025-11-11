@@ -6,9 +6,9 @@
 
 # Konfigurasi untuk 3 server
 SERVERS=(
-    "user@your ip"
-    "user@your ip"
-    "user@your ip"
+    "mamoy@192.168.0.101"
+    "ituk@192.168.0.102"
+    "ituk@192.168.0.103"
 )
 
 show_header() {
@@ -94,4 +94,79 @@ reboot_selected_server() {
     
     if [[ $choice -ge 1 && $choice -le ${#SERVERS[@]} ]]; then
         server="${SERVERS[$((choice-1))]}"
+        echo "⏳ Reboot $server..."
+        if ssh -o ConnectTimeout=5 $server "sudo reboot" &>/dev/null; then
+            echo "✅ Perintah reboot dikirim ke $server"
+        else
+            echo "❌ Gagal mengirim perintah ke $server"
+        fi
+    else
+        echo "❌ Pilihan tidak valid!"
+    fi
+}
 
+reboot_multiple_servers() {
+    echo ""
+    echo "🔄 REBOOT BEBERAPA SERVER"
+    echo "-------------------------------------------"
+    echo "Pilih server yang akan di-reboot:"
+    for i in "${!SERVERS[@]}"; do
+        echo "$((i+1)). ${SERVERS[$i]}"
+    done
+    echo "-------------------------------------------"
+    echo "Contoh: 1 3 (untuk reboot server 1 dan 3)"
+    echo "        all (untuk reboot semua server)"
+    echo "-------------------------------------------"
+    
+    read -p "Masukkan pilihan: " choices
+    
+    if [[ "$choices" == "all" ]]; then
+        reboot_all_servers
+        return
+    fi
+    
+    for choice in $choices; do
+        if [[ $choice -ge 1 && $choice -le ${#SERVERS[@]} ]]; then
+            server="${SERVERS[$((choice-1))]}"
+            echo "⏳ Reboot $server..."
+            ssh -o ConnectTimeout=5 $server "sudo reboot" &
+            echo "✅ Perintah dikirim ke $server"
+        else
+            echo "❌ Pilihan $choice tidak valid!"
+        fi
+    done
+    
+    echo "-------------------------------------------"
+    echo "✅ Proses reboot selesai"
+}
+
+show_reboot_menu() {
+    while true; do
+        clear
+        show_header
+        echo ""
+        echo "🔄 PILIH MODE REBOOT:"
+        echo "1. Reboot Semua Server"
+        echo "2. Reboot Server Tertentu"
+        echo "3. Reboot Beberapa Server"
+        echo "0. Kembali ke Menu Utama"
+        echo "-------------------------------------------"
+        
+        read -p "Masukkan pilihan [0-3]: " choice
+        
+        case $choice in
+            1)
+                echo ""
+                read -p "Yakin ingin reboot semua server? (y/n): " confirm
+                if [[ $confirm == "y" || $confirm == "Y" ]]; then
+                    reboot_all_servers
+                    break
+                else
+                    echo "❌ Dibatalkan oleh user"
+                fi
+                ;;
+            2)
+                reboot_selected_server
+                break
+                ;;
+            3)
